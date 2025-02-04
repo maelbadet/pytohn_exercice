@@ -33,4 +33,6 @@ de plus, on va jouer avec les exports de fichier en changeant d'extension (passe
 - Exercice 1 : j'ai utilisé l'api `https://api.fbi.gov/wanted/v1/list`, 
 pour recuperer les 3 premiere personnes rechéché par le fbi de la page numero 2
 - Exercice 2 : mon script permet de lire un fichier csv et de changer ses id en incrementant de +1 celui de base.
-- Exercice 3 : 
+- Exercice 3 : Ce script permet de pouvoir lire le fichier text que j'ai dans le dossier text_files et de sauvegarder 
+ce fichier dans mon dossier json_files sous un format json et non plus text
+- Exercie 4 : pareil que pour l'exercice 4, mais dans le dossier csv_files en format csv
