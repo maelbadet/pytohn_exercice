@@ -1,0 +1,5 @@
+test du traitememt sur ce fichier
+ligne 1
+ligne 2
+ligne 3
+et un lorem ipsum

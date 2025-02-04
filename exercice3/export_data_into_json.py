@@ -30,9 +30,7 @@ def exporter_dictionnaire_vers_json(dictionnaire, chemin_fichier_json):
 	except Exception as e:
 		print(f"Une erreur est survenue lors de la création du fichier JSON : {e}")
 
-
-# Exemple d'utilisation avec chemins dynamiques
-# Obtenir la racine du projet
+# Obtenir le chemin racine du projet
 root_file = pathlib.Path(__file__).parent.resolve()
 
 # Chemin du fichier texte

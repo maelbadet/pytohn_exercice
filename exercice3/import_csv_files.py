@@ -1,4 +1,5 @@
 import csv
+import pathlib
 
 
 # Fonction pour lire un fichier CSV
@@ -30,13 +31,19 @@ def sauvegarder_csv(chemin_fichier, en_tetes, donnees):
 		ecrivain_csv.writerows(donnees)  # Écrire les données
 
 
-# Chemins des fichiers CSV
-fichier_original = "fichier_original.csv"
-fichier_modifie = "fichier_modifie.csv"
+# Obtenir le chemin de la racine du projet
+root_path = pathlib.Path(__file__).parent.resolve()
+
+# Définissez des chemins dynamiques pour les fichiers CSV
+fichier_original = root_path / "changeCsvFiles" / "fichier_original.csv"  # Exemple : le fichier est dans "csv_files"
+fichier_modifie = root_path / "changeCsvFiles" / "fichier_modifie.csv"  # Fichier modifié sauvegardé dans "csv_files"
 
 # Étapes de traitement
-en_tetes, donnees = lire_fichier_csv(fichier_original)  # Étape 1 : Lecture
-donnees_modifiees = modifier_contenu(donnees)  # Étape 2 : Modification
-sauvegarder_csv(fichier_modifie, en_tetes, donnees_modifiees)  # Étape 3 : Sauvegarde
+if not fichier_original.exists():
+	print(f"Le fichier {fichier_original} n'existe pas.")
+else:
+	en_tetes, donnees = lire_fichier_csv(fichier_original)  # Étape 1 : Lecture
+	donnees_modifiees = modifier_contenu(donnees)  # Étape 2 : Modification
+	sauvegarder_csv(fichier_modifie, en_tetes, donnees_modifiees)  # Étape 3 : Sauvegarde
 
-print("Le fichier CSV modifié a été sauvegardé dans :", fichier_modifie)
+	print("Le fichier CSV modifié a été sauvegardé dans :", fichier_modifie)
