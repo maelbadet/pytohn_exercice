@@ -1,3 +1,6 @@
+import pathlib
+
+
 def fichier_vers_dictionnaire(chemin_fichier):
 	contenu_dictionnaire = {}
 	try:
@@ -22,7 +25,10 @@ def afficher_contenu_dictionnaire(contenu_dictionnaire):
 		print(f"Ligne numéro {numero} : {len(contenu)} caractères → « {contenu} »")
 
 
+# Obtenir le chemin du fichier root a la racine de l'exercice
+root_path = pathlib.Path(__file__).parent.resolve()
+chemin_exemple = root_path / "test.txt"
+
 # Exemple d'appel
-chemin_exemple = "./test.txt"
 dictionnaire = fichier_vers_dictionnaire(chemin_exemple)
 afficher_contenu_dictionnaire(dictionnaire)

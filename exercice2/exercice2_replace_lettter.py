@@ -1,8 +1,10 @@
+import pathlib
 import fileinput
 
 
 def remplacer_lettres_par_x(chemin_fichier, lettres_a_remplacer):
 	try:
+		# Traitement du fichier avec un backup
 		with fileinput.FileInput(chemin_fichier, inplace=True, backup=".bak") as fichier:
 			for ligne in fichier:
 				for lettre in lettres_a_remplacer:
@@ -15,6 +17,9 @@ def remplacer_lettres_par_x(chemin_fichier, lettres_a_remplacer):
 		print(f"Une erreur inattendue est survenue : {e}")
 
 
+# Obtenir le chemin du fichier root a la racine de l'exercice
+root_path = pathlib.Path(__file__).parent.resolve()
+chemin_exemple = root_path / "test.txt"
+
 # Exemple d'appel
-chemin_exemple = "C:/Users/maelb/PycharmProjects/exercice2/test.txt"  # Remplacez avec le chemin de votre fichier
 remplacer_lettres_par_x(chemin_exemple, lettres_a_remplacer=["a", "e", "i", "o", "u"])  # Remplace les voyelles
