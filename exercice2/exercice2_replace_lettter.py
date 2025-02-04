@@ -8,8 +8,8 @@ def remplacer_lettres_par_x(chemin_fichier, lettres_a_remplacer):
 		with fileinput.FileInput(chemin_fichier, inplace=True, backup=".bak") as fichier:
 			for ligne in fichier:
 				for lettre in lettres_a_remplacer:
-					ligne = ligne.replace(lettre, "x")  # Remplace les lettres spécifiées
-				print(ligne, end='')  # Réécrit dans le fichier
+					ligne = ligne.replace(lettre, "x")  # Remplace les lettres spécifiées (les voyelles dans mon cas)
+				print(ligne, end='')  # Réécrit dans le fichier et empeche les /n a la fin de la ligne
 		print(f"Remplacement effectué avec succès dans '{chemin_fichier}'.")
 	except FileNotFoundError:
 		print(f"Erreur : Le fichier '{chemin_fichier}' est introuvable.")
@@ -21,5 +21,5 @@ def remplacer_lettres_par_x(chemin_fichier, lettres_a_remplacer):
 root_path = pathlib.Path(__file__).parent.resolve()
 chemin_exemple = root_path / "test.txt"
 
-# Exemple d'appel
-remplacer_lettres_par_x(chemin_exemple, lettres_a_remplacer=["a", "e", "i", "o", "u"])  # Remplace les voyelles
+# appel de la fonction pour changer les voyelles de mon fichier par des 'x'
+remplacer_lettres_par_x(chemin_exemple, lettres_a_remplacer=["a", "e", "i", "o", "u"])
