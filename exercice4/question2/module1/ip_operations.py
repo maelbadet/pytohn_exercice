@@ -57,15 +57,3 @@ class IPv4Validator:
 		if not self.adresse_ipv4:
 			raise ValueError("Aucune adresse IP n'a été définie dans l'objet.")
 		return self.valider_ipv4(self.adresse_ipv4)
-
-
-if __name__ == "__main__":
-	# Exemple pour tester les fonctionnalités directement dans ce fichier
-	print("Exemple d'utilisation de la classe IPv4Validator")
-	ipv4_validator = IPv4Validator("192.168.1.1")
-	ipv4_validator.afficher_adresse()
-	try:
-		if ipv4_validator.valider_adresse():
-			print("L'adresse est valide.")
-	except ValueError as e:
-		print(f"Erreur : {e}")

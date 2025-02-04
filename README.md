@@ -36,3 +36,17 @@ pour recuperer les 3 premiere personnes rechéché par le fbi de la page numero 
 - Exercice 3 : Ce script permet de pouvoir lire le fichier text que j'ai dans le dossier text_files et de sauvegarder 
 ce fichier dans mon dossier json_files sous un format json et non plus text
 - Exercie 4 : pareil que pour l'exercice 4, mais dans le dossier csv_files en format csv
+
+## Exercice 4
+Dans cet exercice, le but est de commencer à se familiariser avec la POO sur python.
+- question 1, dans ce script, je reprends la question de l'exercice 1 pour envoyer une adresse IP, mais en utilisant un module pour pouvoir le reutiliser
+- question 2, pareil que pour la question 1, mais en faisant une classe pour ajouter les fonctionnalites
+- question 3, là, le but est de faire une petite application bancaire pour comprendre le principe d'heritage de classe et de modules
+
+## Exercice 5
+Le but de cet exercice est de faire un petit jeu de cartes dans lequel on jouera avec 52 cartes
+definie au lancement pour commencer, puis et enfin distribuer selon le nombre de joueurs 
+à parts egales.
+- question 1, le script permettant de generer le paquet de 52 cartes avec numero et couleurs
+- question 2, le script permettant de melanger le paquet de carte, il doit etre unique à chaque appel
+- question 3, le fait de demander le nombre de joueurs et attribuer un nombre de cartes egales pour chaque joueur et afficher le reste si besoin
