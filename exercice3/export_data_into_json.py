@@ -31,13 +31,13 @@ def exporter_dictionnaire_vers_json(dictionnaire, chemin_fichier_json):
 		print(f"Une erreur est survenue lors de la création du fichier JSON : {e}")
 
 # Obtenir le chemin racine du projet
-root_file = pathlib.Path(__file__).parent.resolve()
+root_file = pathlib.Path(__file__).parent.parent.resolve()
 
 # Chemin du fichier texte
-chemin_texte = os.path.join(root_file, "text_files", "test.txt")  # Par exemple un répertoire 'text_files'
+chemin_texte = os.path.join(root_file, "exercice2", "test.txt")  # Par exemple un répertoire 'text_files'
 
 # Chemin du fichier JSON à générer
-chemin_json = os.path.join(root_file, "json_files", "resultat.json")  # Par exemple un répertoire 'json_files'
+chemin_json = os.path.join(root_file, "exercice3/json_files", "resultat.json")  # Par exemple un répertoire 'json_files'
 
 # Convertir le fichier texte en dictionnaire
 dictionnaire = fichier_vers_dictionnaire(chemin_texte)

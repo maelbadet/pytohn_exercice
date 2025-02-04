@@ -40,13 +40,13 @@ def fichier_vers_dictionnaire(chemin_fichier):
 
 
 # Obtenir le chemin de la racine du projet
-root_file = pathlib.Path(__file__).parent.resolve()
+root_file = pathlib.Path(__file__).parent.parent.resolve()
 
 # Chemin pour le fichier texte
-chemin_texte = os.path.join(root_file, "text_files", "test.txt")  # Exemple : un dossier "text_files"
+chemin_texte = os.path.join(root_file, "exercice2", "test.txt")  # Exemple : un dossier "text_files"
 
 # Chemin pour le fichier CSV à générer
-chemin_csv = os.path.join(root_file, "csv_files", "resultat.csv")  # Exemple : un dossier "csv_files"
+chemin_csv = os.path.join(root_file, "exercice3/csv_files", "resultat.csv")  # Exemple : un dossier "csv_files"
 
 # Convertir le fichier texte en dictionnaire
 dictionnaire = fichier_vers_dictionnaire(chemin_texte)
