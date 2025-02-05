@@ -64,7 +64,7 @@ pour lancer le serveur pour l'api, il suffit de taper cette commande dans le bon
 - premiere_api_fast_api : 
   - Connexion : 127.0.0.1:8000 ou localhost:8000
   - route (/) : affiche un message de bienvenu dans mon api
-  - route (/tiems) : affiche tous les items definies dans ma liste statique
+  - route (/items) : affiche tous les items definies dans ma liste statique
   - route (/items/item_id) : affiche l'item par son id ou renvoie une 404 en cas d'item non trouver
 - jeux_52_cartes_fastAPI : 
   - Connexion : 127.0.0.1:8000 ou localhost:8000
@@ -75,3 +75,5 @@ pour lancer le serveur pour l'api, il suffit de taper cette commande dans le bon
   
 Commande pour lancer le serveur : `uvicorn main:app --reload --host 0.0.0.0 --port 8000`
 ## Exercice 8
+Pour commencer il va nous falloir la bibliothèque sqlAlchemy, databases et aiosqlite pour interagir avec la commande :
+`pip install sqlalchemy databases aiosqlite`
