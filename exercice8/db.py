@@ -1,14 +1,18 @@
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import MetaData
+from sqlalchemy.ext.asyncio import create_async_engine
 from databases import Database
 
-# Chemin de la base de données SQLite
-DATABASE_URL = "sqlite:///./cartes.db"
+# URL de la base de données SQLite
+DATABASE_URL = "sqlite+aiosqlite:///./cartes.db"
 
-# Initialisation de SQLAlchemy
-database = Database(DATABASE_URL)  # Base de données asynchrone
-engine = create_engine(DATABASE_URL)  # Moteur SQLAlchemy pour migration, etc.
+# Initialisation de l'engine asynchrone et de la connexion Database
+engine = create_async_engine(DATABASE_URL, echo=True)
+database = Database(DATABASE_URL)
 
-metadata = MetaData()  # Métadonnées communes
+# Métadonnées communes pour SQLAlchemy
+metadata = MetaData()  # Définition centrale du metadata
 
-def init_db():
-	metadata.create_all(bind=engine)
+# Fonction pour initialiser les tables dans la base de données
+async def init_db():
+	async with engine.begin() as conn:
+		await conn.run_sync(metadata.create_all)

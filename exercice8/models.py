@@ -1,5 +1,5 @@
 from sqlalchemy import Table, Column, Integer, String, ForeignKey
-from .db import metadata
+from db import metadata  # Importer `metadata` de db.py
 
 # Table pour les cartes
 cartes_table = Table(

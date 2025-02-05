@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlite:C:\Users\maelb\PycharmProjects\pytohn_exercice1\exercice8\cartes.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="test" uuid="6b37078a-ca64-4d84-8593-b67b58b363d7">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\maelb\PycharmProjects\pytohn_exercice1\exercice8\test.db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

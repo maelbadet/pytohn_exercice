@@ -1,5 +1,7 @@
 import random
 from .Carte import Carte
+from db import *
+from models import *
 
 
 class PaquetDeCartes:
@@ -12,11 +14,32 @@ class PaquetDeCartes:
 			"Valet", "Dame", "Roi"
 		]
 
-	def generer_paquet(self):
-		"""Génère un paquet de 52 cartes"""
-		self.cartes = [
-			Carte(valeur, couleur) for couleur in self.couleurs for valeur in self.valeurs
-		]
+	async def generer_paquet(self):
+		"""Génère un paquet de 52 cartes et les stocke dans la base de données"""
+		try:
+			# Création d'un paquet de cartes
+			print("Début de la génération du paquet de cartes...")
+			self.cartes = [
+				Carte(valeur, couleur) for couleur in self.couleurs for valeur in self.valeurs
+			]
+
+			print(f"{len(self.cartes)} cartes générées avec succès.")
+
+			# Insérer les cartes dans la base de données
+			if not database.is_connected:
+				raise RuntimeError("La base de données n'est pas connectée.")
+
+			query = cartes_table.insert()
+			values = [{"valeur": carte.valeur, "couleur": carte.couleur} for carte in self.cartes]
+
+			print("Données d'insertion : ", values[:5])  # Vérifier un échantillon des données
+
+			await database.execute_many(query, values)
+
+			print("Insertion des cartes en base réussie.")
+		except Exception as e:
+			print(f"Erreur lors de la génération du paquet : {e}")
+			raise
 
 	def afficher_paquet(self):
 		"""Affiche toutes les cartes dans le paquet"""

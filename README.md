@@ -62,18 +62,31 @@ Pareil que pour l'exercice 6, bien verifier que fastapi et uvicorn sont bien ins
 Une fois ça fait : je mets en dessous les differentes routes pour les differents projet : 
 pour lancer le serveur pour l'api, il suffit de taper cette commande dans le bon sous dossier que je liste ci-dessous
 - premiere_api_fast_api : 
+  - Commande pour lancer le serveur : `uvicorn main:app --reload --host 0.0.0.0 --port 8000`
   - Connexion : 127.0.0.1:8000 ou localhost:8000
+  - voir le swagger : http://127.0.0.1:8000/docs
   - route (/) : affiche un message de bienvenu dans mon api
   - route (/items) : affiche tous les items definies dans ma liste statique
   - route (/items/item_id) : affiche l'item par son id ou renvoie une 404 en cas d'item non trouver
 - jeux_52_cartes_fastAPI : 
-  - Connexion : 127.0.0.1:8000 ou localhost:8000
+  - Commande pour lancer le serveur : `uvicorn main:app --reload --host 0.0.0.0 --port 5000`
+  - Connexion : 127.0.0.1:5000 ou localhost:5000
+  - voir le swagger : http://127.0.0.1:5000/docs
   - route (/) : affiche un message de bienvenu
   - route (/cartes/) : affiche les toutes les cartes
   - route (/cartes/melangees/) : affiche toutes les cartes melangees
   - route (/cartes/distribution/?nb_joueur=`mettre le nombre de joueur`) : affiche la distribution de cartes
-  
-Commande pour lancer le serveur : `uvicorn main:app --reload --host 0.0.0.0 --port 8000`
+
 ## Exercice 8
+Le but de cet exercice est de reprendre l'exercice 7, mais en incluant une base de donner pour stocker les cartes et 
+les differents jouerurs et distributions de jeux
+
 Pour commencer il va nous falloir la bibliothèque sqlAlchemy, databases et aiosqlite pour interagir avec la commande :
 `pip install sqlalchemy databases aiosqlite`
+
+Maintenant, je vais lister les routes pour faire le test : 
+- **Avec POSTMAN ou en CURL** : faire une requete vers http://127.0.0.1:4000/cartes/init/ pour initialiser les donnees
+- Acceder a l'url http://127.0.0.1:4000/docs pour voir le swagger de l'api et donc connaitre les routes
+- L'URL http://127.0.0.1:4000/cartes/, permet de lister toutes les cartes dans l'ordre
+- L'URL http://127.0.0.1:4000/cartes/melangees/?nb_joueurs=5 permet de faire le test de distribution de paquets pour un
+nombre de CINQ personnes ainsi que le reste des cartes en trop.

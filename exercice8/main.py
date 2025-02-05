@@ -1,64 +1,125 @@
-from fastapi import FastAPI, HTTPException
-from modules.Distribution import Distribution
-from modules.PaquetDeCartes import PaquetDeCartes
+import random
 
-# appel de FastAPI
+from fastapi import FastAPI, HTTPException
+from db import database, init_db
+from modules import PaquetDeCartes, Distribution
+from models import cartes_table, joueurs_table, distribution_table
+
 app = FastAPI()
+
+
+@app.on_event("startup")
+async def startup():
+	await database.connect()
+	await init_db()  # Création des tables
+
+
+@app.on_event("shutdown")
+async def shutdown():
+	await database.disconnect()
+
+
+
+# appel de fastAPI avec base de donnee
 
 
 @app.get("/")
 async def read_root():
 	return {"message": "Bienvenue sur mon backend FastAPI!"}
 
-@app.get("/cartes/")
-def get_paquet_cartes():
-	"""
-    Endpoint pour récupérer un paquet de 52 cartes non mélangé.
-    """
-	paquet = PaquetDeCartes()
-	paquet.generer_paquet()  # Générer un paquet de 52 cartes
-	return {"paquet_de_cartes": [str(carte) for carte in paquet.cartes]}
 
+@app.post("/cartes/init/")
+async def ajouter_cartes_a_la_bdd():
+	"""
+    Endpoint pour ajouter les 52 cartes dans la base de données.
+    """
+	print("Endpoint '/cartes/init/' appelé.")
+	try:
+		if not database.is_connected:
+			raise HTTPException(status_code=500, detail="La base de données n'est pas connectée.")
+
+		# Vérifiez si les cartes existent déjà dans la DB
+		query = cartes_table.select()
+		cartes_existantes = await database.fetch_all(query)
+
+		if cartes_existantes:
+			print("Des cartes existent déjà dans la BDD.")
+			raise HTTPException(status_code=400, detail="Le paquet de cartes existe déjà dans la base de données.")
+
+		# Création du paquet de 52 cartes
+		paquet = PaquetDeCartes()
+		await paquet.generer_paquet()
+		print(f"{len(paquet.cartes)} cartes ajoutées au paquet avec succès.")
+
+		return {"message": "Les cartes ont été ajoutées à la base de données avec succès."}
+	except Exception as e:
+		print(f"Erreur lors de l'ajout des cartes : {e}")
+		raise HTTPException(status_code=500, detail=f"Une erreur est survenue : {str(e)}")
+
+@app.get("/cartes/")
+async def recuperer_cartes():
+	"""
+         Endpoint pour récupérer toutes les cartes de la base de données.
+         """
+	query = cartes_table.select()
+	cartes = await database.fetch_all(query)
+	return [{"id": carte.id, "valeur": carte.valeur, "couleur": carte.couleur} for carte in cartes]
 
 @app.get("/cartes/melangees/")
-def get_paquet_cartes_melangees():
+async def distribuer_paquet(nb_joueurs: int):
 	"""
-       Endpoint pour récupérer un paquet de 52 cartes mélangé.
-       """
-	paquet = PaquetDeCartes()
-	paquet.generer_paquet()
-	paquet.melanger_paquet()
-	return {"paquet_de_cartes": [str(carte) for carte in paquet.cartes]}
-
-
-@app.get("/cartes/distribution/")
-def get_paquets_pour_joueurs(nb_joueurs: int):
-	"""
-    Endpoint pour distribuer des cartes entre X joueurs.
+    Endpoint pour mélanger les cartes et les distribuer à un nombre donné de joueurs.
     """
-	# Vérification de la validité du nombre de joueurs
 	if nb_joueurs <= 0:
 		raise HTTPException(status_code=400, detail="Le nombre de joueurs doit être un entier positif.")
 
-	paquet = PaquetDeCartes()
-	paquet.generer_paquet()  # Générer un paquet de 52 cartes
-	paquet.melanger_paquet()  # Mélanger le paquet
-
 	try:
-		# Distribution des cartes
-		distribution = Distribution(paquet, nb_joueurs)
-		distribution.distribuer()
+		# Vérification de la connexion à la base de données
+		if not database.is_connected:
+			raise HTTPException(status_code=500, detail="La base de données n'est pas connectée.")
 
-		# Préparer le résultat
-		result = {
-			f"Joueur {i + 1}": [str(carte) for carte in main]
-			for i, main in enumerate(distribution.mains)
+		# Charger toutes les cartes à partir de la base de données
+		query = cartes_table.select()
+		cartes = await database.fetch_all(query)
+
+		if not cartes:
+			raise HTTPException(status_code=400, detail="Aucune carte n'a été trouvée dans la base de données.")
+
+		cartes_list = [dict(carte) for carte in cartes]
+		random.shuffle(cartes_list)
+
+		# Diviser les cartes entre les joueurs
+		nb_cartes_par_joueur = len(cartes_list) // nb_joueurs
+		mains = [
+			cartes_list[i * nb_cartes_par_joueur: (i + 1) * nb_cartes_par_joueur]
+			for i in range(nb_joueurs)
+		]
+
+		cartes_restantes = cartes_list[nb_joueurs * nb_cartes_par_joueur:]
+
+		# Sauvegarder les joueurs dans la base de données
+		joueurs = [{"nom": f"Joueur {i + 1}"} for i in range(nb_joueurs)]
+		joueur_ids = []
+		for joueur in joueurs:
+			joueur_id = await database.execute(joueurs_table.insert().values(joueur))
+			joueur_ids.append(joueur_id)
+
+		# Sauvegarder la distribution des cartes
+		for i, main in enumerate(mains):
+			joueur_id = joueur_ids[i]
+			distributions = [{"joueur_id": joueur_id, "carte_id": carte["id"]} for carte in main]
+			await database.execute_many(distribution_table.insert(), distributions)
+
+		return {
+			"message": "Cartes mélangées et distribuées avec succès.",
+			"distribution": {
+				f"Joueur {i + 1}": [{"valeur": carte['valeur'], "couleur": carte['couleur']} for carte in main]
+				for i, main in enumerate(mains)
+			},
+			"cartes_restantes": [{"valeur": carte['valeur'], "couleur": carte['couleur']} for carte in
+			                     cartes_restantes],
 		}
-		if distribution.cartes_restantes:
-			result["Cartes restantes"] = [str(carte) for carte in distribution.cartes_restantes]
 
-		return result
-
-	except ValueError as e:
-		# Gérer l'erreur si trop de joueurs
-		raise HTTPException(status_code=400, detail=str(e))
+	except Exception as e:
+		print(f"Erreur lors de la distribution des cartes : {e}")
+		raise HTTPException(status_code=500, detail=f"Une erreur est survenue : {str(e)}")
