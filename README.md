@@ -50,3 +50,28 @@ definie au lancement pour commencer, puis et enfin distribuer selon le nombre de
 - question 1, le script permettant de generer le paquet de 52 cartes avec numero et couleurs
 - question 2, le script permettant de melanger le paquet de carte, il doit etre unique à chaque appel
 - question 3, le fait de demander le nombre de joueurs et attribuer un nombre de cartes egales pour chaque joueur et afficher le reste si besoin
+
+## Exercice 6 
+Avant toute chose, penser à installer pytest si ce n'est pas deja fais :` pip install pytest`
+Une fois pytest installer, on peut tester les deux manieres de faire les tests sur python : 
+- via la main.py pour le test avec les `assert`
+- en faisant la commande pytest -v depuis le bon dossier (exercice 6) pour les tests avec pytest
+
+## Exercice 7 
+Pareil que pour l'exercice 6, bien verifier que fastapi et uvicorn sont bien installées avant de faire des tests : `   pip install fastapi uvicorn`
+Une fois ça fait : je mets en dessous les differentes routes pour les differents projet : 
+pour lancer le serveur pour l'api, il suffit de taper cette commande dans le bon sous dossier que je liste ci-dessous
+- premiere_api_fast_api : 
+  - Connexion : 127.0.0.1:8000 ou localhost:8000
+  - route (/) : affiche un message de bienvenu dans mon api
+  - route (/tiems) : affiche tous les items definies dans ma liste statique
+  - route (/items/item_id) : affiche l'item par son id ou renvoie une 404 en cas d'item non trouver
+- jeux_52_cartes_fastAPI : 
+  - Connexion : 127.0.0.1:8000 ou localhost:8000
+  - route (/) : affiche un message de bienvenu
+  - route (/cartes/) : affiche les toutes les cartes
+  - route (/cartes/melangees/) : affiche toutes les cartes melangees
+  - route (/cartes/distribution/?nb_joueur=`mettre le nombre de joueur`) : affiche la distribution de cartes
+  
+Commande pour lancer le serveur : `uvicorn main:app --reload --host 0.0.0.0 --port 8000`
+## Exercice 8
