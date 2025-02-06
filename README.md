@@ -84,6 +84,8 @@ les differents jouerurs et distributions de jeux
 Pour commencer il va nous falloir la bibliothèque sqlAlchemy, databases et aiosqlite pour interagir avec la commande :
 `pip install sqlalchemy databases aiosqlite`
 
+### Attention, je ne réinitialise pas ma base de donnee a chaque appel, donc les distributions de cartes se rajoutes au fur et a mesures !
+
 Maintenant, je vais lister les routes pour faire le test : 
 - **Avec POSTMAN ou en CURL** : faire une requete vers http://127.0.0.1:4000/cartes/init/ pour initialiser les donnees
 - Acceder a l'url http://127.0.0.1:4000/docs pour voir le swagger de l'api et donc connaitre les routes
