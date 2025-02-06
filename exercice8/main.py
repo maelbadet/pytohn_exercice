@@ -33,7 +33,6 @@ async def ajouter_cartes_a_la_bdd():
 	"""
     Endpoint pour ajouter les 52 cartes dans la base de données.
     """
-	print("Endpoint '/cartes/init/' appelé.")
 	try:
 		if not database.is_connected:
 			raise HTTPException(status_code=500, detail="La base de données n'est pas connectée.")
@@ -43,17 +42,14 @@ async def ajouter_cartes_a_la_bdd():
 		cartes_existantes = await database.fetch_all(query)
 
 		if cartes_existantes:
-			print("Des cartes existent déjà dans la BDD.")
 			raise HTTPException(status_code=400, detail="Le paquet de cartes existe déjà dans la base de données.")
 
 		# Création du paquet de 52 cartes
 		paquet = PaquetDeCartes()
 		await paquet.generer_paquet()
-		print(f"{len(paquet.cartes)} cartes ajoutées au paquet avec succès.")
 
 		return {"message": "Les cartes ont été ajoutées à la base de données avec succès."}
 	except Exception as e:
-		print(f"Erreur lors de l'ajout des cartes : {e}")
 		raise HTTPException(status_code=500, detail=f"Une erreur est survenue : {str(e)}")
 
 @app.get("/cartes/")
