@@ -19,7 +19,6 @@ async def shutdown():
 	await database.disconnect()
 
 
-
 # appel de fastAPI avec base de donnee
 
 
@@ -52,6 +51,7 @@ async def ajouter_cartes_a_la_bdd():
 	except Exception as e:
 		raise HTTPException(status_code=500, detail=f"Une erreur est survenue : {str(e)}")
 
+
 @app.get("/cartes/")
 async def recuperer_cartes():
 	"""
@@ -60,6 +60,7 @@ async def recuperer_cartes():
 	query = cartes_table.select()
 	cartes = await database.fetch_all(query)
 	return [{"id": carte.id, "valeur": carte.valeur, "couleur": carte.couleur} for carte in cartes]
+
 
 @app.get("/cartes/melangees/")
 async def distribuer_paquet(nb_joueurs: int):
@@ -119,3 +120,24 @@ async def distribuer_paquet(nb_joueurs: int):
 	except Exception as e:
 		print(f"Erreur lors de la distribution des cartes : {e}")
 		raise HTTPException(status_code=500, detail=f"Une erreur est survenue : {str(e)}")
+
+
+@app.get("/joueurs/")
+async def recuperer_joueurs():
+	"""
+         Endpoint pour récupérer tous les joueurs de la base de données.
+         """
+	query = joueurs_table.select()
+	joueurs = await database.fetch_all(query)
+	return [{"id": joueur.id, "nom": joueur.nom} for joueur in joueurs]
+
+
+@app.get("/distribution/")
+async def recuperer_distribution():
+	"""
+         Endpoint pour récupérer toutes les distributions de cartes de la base de données.
+         """
+	query = distribution_table.select()
+	distributions = await database.fetch_all(query)
+	return [{"id": distribution.id, "id_joueur": distribution.joueur_id, "id_cartes": distribution.carte_id} for
+	        distribution in distributions]
